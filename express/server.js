@@ -8,7 +8,7 @@ const request = require('request');
 
 const router = express.Router();
 
-router.post('/hasura-user-sync-', (req, res) => {
+router.post('/hasura-user-sync', (req, res) => {
 
   const userRole = req.body.event.registration.roles[0];
 
