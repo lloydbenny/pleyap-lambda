@@ -30,18 +30,41 @@ router.post('/hasura-user-sync-registration', (req, res) => {
 
 router.post('/hasura-user-sync-login', (req, res) => {
 
-  // const userRole = req.body.event.registration.roles[0];
+  const userId = req.body.event.user.id;
 
-  console.log(req.body);
+  console.log(userId);
 
-  // switch(userRole) {
-  //   case "barber_shop": {
-  //     addUserWithBarberShop(req);
-  //   }
-  //   case "user": {
-  //     addUser(req);
-  //   }
-  // }
+  const mutation = `mutation ($user_id: String) {
+    insert_pleyap_datastore_Profile(objects: [{
+      user_id: $user_id
+    }],
+      on_conflict: {
+        constraint: profile_pk,
+        update_columns: [last_seen]
+      }) {
+      affected_rows
+    }
+  }`;
+
+  request.post(
+    {
+      headers: {
+        "content-type": "application/json",
+        "x-hasura-admin-secret": "Ssiigo@01"
+      },
+      url: "https://pleyap.hasura.app/v1/graphql",
+      body: JSON.stringify({
+        query: mutation,
+        variables: {
+          "user_id": userId,
+        }
+      })
+    },
+    function(error, response, body) {
+      console.log(body);
+      console.error(error);
+    }
+  );
 
   res
 	.status(200)
