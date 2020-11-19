@@ -30,7 +30,7 @@ router.post('/hasura-user-sync-registration', (req, res) => {
 
 router.post('/hasura-user-sync-login', (req, res) => {
 
-  const userRole = req.body.event.registration.roles[0];
+  // const userRole = req.body.event.registration.roles[0];
 
   console.log(req.body);
 
