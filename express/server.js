@@ -31,20 +31,33 @@ router.post('/hasura-user-sync-registration', (req, res) => {
 router.post('/hasura-user-sync-login', (req, res) => {
 
   const userId = req.body.event.user.id;
+  const firstName = req.body.event.user.firstName;
+  const lastName = req.body.event.user.lastName;
+  const picture = req.body.event.user.imageUrl;
 
-  console.log(userId);
+  console.log("UID: " + userId);
 
-  const mutation = `mutation ($user_id: String) {
-    insert_pleyap_datastore_Profile(objects: [{
-      user_id: $user_id
-    }],
-      on_conflict: {
-        constraint: profile_pk,
-        update_columns: [last_seen]
-      }) {
-      affected_rows
+  const mutation = `
+    mutation (
+      $user_id: String,
+      $last_name: String,
+      $first_name: String,
+      $profileUrl: String
+    ) {
+      insert_pleyap_datastore_Profile(objects: [{
+        user_id: $user_id,
+        lastName: $last_name,
+        firstName: $first_name
+        profileUrl: $profileUrl
+      }],
+        on_conflict: {
+          constraint: profile_pk,
+          update_columns: [last_seen]
+        }) {
+        affected_rows
+      }
     }
-  }`;
+  `;
 
   request.post(
     {
@@ -57,6 +70,9 @@ router.post('/hasura-user-sync-login', (req, res) => {
         query: mutation,
         variables: {
           "user_id": userId,
+          "first_name": firstName,
+          "last_name": lastName,
+          "profileUrl": picture
         }
       })
     },
