@@ -6,7 +6,25 @@ const app = express();
 const bodyParser = require('body-parser');
 const request = require('request');
 
+const ApolloClient = require('apollo-client').ApolloClient;
+const gql = require('graphql-tag');
+const fetch = require('cross-fetch/polyfill').fetch;
+const createHttpLink = require('apollo-link-http').createHttpLink;
+const InMemoryCache = require('apollo-cache-inmemory').InMemoryCache;
+
 const router = express.Router();
+
+const client = new ApolloClient({
+  link: createHttpLink({
+    uri: 'https://pleyap.hasura.app/v1/graphql',
+    fetch: fetch,
+    headers: {
+      "content-type": "application/json",
+      "x-hasura-admin-secret": "Ssiigo@01"
+    },
+  }),
+  cache: new InMemoryCache()
+});
 
 router.post('/hasura-user-sync-registration', (req, res) => {
 
@@ -37,13 +55,11 @@ router.post('/hasura-user-sync-login', (req, res) => {
 
   console.log("UID: " + userId);
 
-  const mutation = `
-    mutation (
-      $user_id: String,
-      $last_name: String,
-      $first_name: String,
-      $profileUrl: String
-    ) {
+  const mutation = `mutation (
+    $user_id: String,
+		$last_name: String,
+		$first_name: String,
+		$profileUrl: String) {
       insert_pleyap_datastore_Profile(objects: [{
         user_id: $user_id,
         lastName: $last_name,
@@ -52,12 +68,11 @@ router.post('/hasura-user-sync-login', (req, res) => {
       }],
         on_conflict: {
           constraint: profile_pk,
-          update_columns: [last_seen]
+          update_columns: [last_seen, profileUrl]
         }) {
         affected_rows
       }
-    }
-  `;
+  }`;
 
   request.post(
     {
@@ -101,7 +116,7 @@ function addBarberShop(req) {
   const mutation = `
     mutation AddBarberShop($barberShop: pleyap_datastore_BarberShop_insert_input!) {
       insertOneBarberShop(object: $barberShop) {
-        objectId
+        affected_rows
       }
     }
   `;
@@ -120,6 +135,7 @@ function addBarberShop(req) {
             "name": barber_shop_name,
             "phone": barber_shop_phone,
             "address": barber_shop_address,
+            "ownerId": userId
             // "ownerId": userId
           }
         }
