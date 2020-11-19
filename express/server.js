@@ -8,7 +8,7 @@ const request = require('request');
 
 const router = express.Router();
 
-router.post('/hasura-user-sync', (req, res) => {
+router.post('/hasura-user-sync-registration', (req, res) => {
 
   const userRole = req.body.event.registration.roles[0];
 
@@ -22,6 +22,26 @@ router.post('/hasura-user-sync', (req, res) => {
       addUser(req);
     }
   }
+
+  res
+	.status(200)
+	.json({ postBody: req.body.event });
+});
+
+router.post('/hasura-user-sync-login', (req, res) => {
+
+  const userRole = req.body.event.registration.roles[0];
+
+  console.log(req.body);
+
+  // switch(userRole) {
+  //   case "barber_shop": {
+  //     addUserWithBarberShop(req);
+  //   }
+  //   case "user": {
+  //     addUser(req);
+  //   }
+  // }
 
   res
 	.status(200)
