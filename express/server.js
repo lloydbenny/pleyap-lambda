@@ -91,51 +91,51 @@ router.post('/hasura-user-sync-registration-pleyap-admin', (req, res) => {
 
   console.log(userId + "\n" + firstName + "\n" + lastName + "\n" + picture);
 
-  const mutation = `mutation (
-    $user_id: String,
-		$last_name: String,
-		$first_name: String,
-		$profileUrl: String) {
-      insert_pleyap_datastore_Profile(objects: [{
-        user_id: $user_id,
-        lastName: $last_name,
-        firstName: $first_name
-        profileUrl: $profileUrl
-      }],
-        on_conflict: {
-          constraint: profile_pk,
-          update_columns: [last_seen, lastName, firstName]
-        }) {
-        affected_rows
-      }
-  }`;
+  // const mutation = `mutation (
+  //   $user_id: String,
+	// 	$last_name: String,
+	// 	$first_name: String,
+	// 	$profileUrl: String) {
+  //     insert_pleyap_datastore_Profile(objects: [{
+  //       user_id: $user_id,
+  //       lastName: $last_name,
+  //       firstName: $first_name
+  //       profileUrl: $profileUrl
+  //     }],
+  //       on_conflict: {
+  //         constraint: profile_pk,
+  //         update_columns: [last_seen, lastName, firstName]
+  //       }) {
+  //       affected_rows
+  //     }
+  // }`;
 
-  request.post(
-    {
-      headers: {
-        "content-type": "application/json",
-        "x-hasura-admin-secret": "Ssiigo@01"
-      },
-      url: "https://pleyap.hasura.app/v1/graphql",
-      body: JSON.stringify({
-        query: mutation,
-        variables: {
-          "user_id": userId,
-          "first_name": firstName,
-          "last_name": lastName,
-          "profileUrl": picture
-        }
-      })
-    },
-    function(error, response, body) {
-      if (response.statusCode == 200) {
-        addBarberShop(req);
-      } else {
-        console.error(error);
-      }
-      console.log(response.statusCode);
-    }
-  );
+  // request.post(
+  //   {
+  //     headers: {
+  //       "content-type": "application/json",
+  //       "x-hasura-admin-secret": "Ssiigo@01"
+  //     },
+  //     url: "https://pleyap.hasura.app/v1/graphql",
+  //     body: JSON.stringify({
+  //       query: mutation,
+  //       variables: {
+  //         "user_id": userId,
+  //         "first_name": firstName,
+  //         "last_name": lastName,
+  //         "profileUrl": picture
+  //       }
+  //     })
+  //   },
+  //   function(error, response, body) {
+  //     if (response.statusCode == 200) {
+  //       addBarberShop(req);
+  //     } else {
+  //       console.error(error);
+  //     }
+  //     console.log(response.statusCode);
+  //   }
+  // );
 
   res
 	.status(200)
