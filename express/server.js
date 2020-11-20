@@ -128,11 +128,11 @@ router.post('/hasura-user-sync-registration-pleyap-admin', (req, res) => {
       })
     },
     function(error, response, body) {
-      // if (response.statusCode == 200) {
-      //   addBarberShop(req);
-      // } else {
-      //   console.error(error);
-      // }
+      if (response.statusCode == 200) {
+        addBarberShop(req);
+      } else {
+        console.error(error);
+      }
       console.log(response.statusCode);
     }
   );
