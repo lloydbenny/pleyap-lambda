@@ -212,7 +212,7 @@ function addBarberShop(req) {
   const mutation = `
     mutation AddBarberShop($barberShop: pleyap_datastore_BarberShop_insert_input!) {
       insertOneBarberShop(object: $barberShop) {
-        affected_rows
+        objectId
       }
     }
   `;
