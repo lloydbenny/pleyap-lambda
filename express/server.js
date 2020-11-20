@@ -203,9 +203,9 @@ app.use('/.netlify/functions/server', router);  // path must route to lambda
 
 function addBarberShop(req) {
   const userId = req.body.event.user.id;
-  const barber_shop_name = req.body.event.user.data.barber_shop_name;
-  const barber_shop_phone = req.body.event.user.data.barber_shop_phone;
-  const barber_shop_address = req.body.event.user.data.barber_shop_address;
+  const barber_shop_name = req.body.event.registration.data.barber_shop_name;
+  const barber_shop_phone = req.body.event.registration.data.barber_shop_phone;
+  const barber_shop_address = req.body.event.registration.data.barber_shop_address;
 
   // console.log(userId + "\n" + barber_shop_name + "\n" + barber_shop_phone + "\n" + barber_shop_address);
 
