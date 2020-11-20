@@ -73,14 +73,21 @@ router.post('/hasura-user-sync-registration-pleyap', (req, res) => {
       })
     },
     function(error, response, body) {
-      console.log(body);
-      console.error(error);
+      if (response.statusCode == 200) {
+        res
+          .status(200)
+          .json({ postBody: req.body.event });
+      }
+
+      if (error != null) {
+        res
+          .status(response.statusCode)
+          .json({ message: error });
+
+        console.error(error);
+      }
     }
   );
-
-  res
-	.status(200)
-	.json({ postBody: req.body.event });
 });
 
 router.post('/hasura-user-sync-registration-pleyap-admin', (req, res) => {
@@ -130,14 +137,16 @@ router.post('/hasura-user-sync-registration-pleyap-admin', (req, res) => {
     },
     function(error, response, body) {
       if (response.statusCode == 200) {
-        // addBarberShop(req);
+        addBarberShop(req, res);
+      }
+
+      if (error != null) {
         res
-          .status(200)
-          .json({ postBody: req.body.event });
-      } else {
+          .status(response.statusCode)
+          .json({ message: error });
+          
         console.error(error);
       }
-      console.log(response.statusCode);
     }
   );
 });
@@ -188,20 +197,27 @@ router.post('/hasura-user-sync-login', (req, res) => {
       })
     },
     function(error, response, body) {
-      console.log(body);
-      console.error(error);
+      if (response.statusCode == 200) {
+        res
+          .status(200)
+          .json({ postBody: req.body.event });
+      }
+
+      if (error != null) {
+        res
+          .status(response.statusCode)
+          .json({ message: error });
+
+        console.error(error);
+      }
     }
   );
-
-  res
-	.status(200)
-	.json({ postBody: req.body.event });
 });
 
 app.use(bodyParser.json());
 app.use('/.netlify/functions/server', router);  // path must route to lambda
 
-function addBarberShop(req) {
+function addBarberShop(req, res) {
   const userId = req.body.event.user.id;
   const barber_shop_name = req.body.event.registration.data.barber_shop_name;
   const barber_shop_phone = req.body.event.registration.data.barber_shop_phone;
@@ -238,8 +254,14 @@ function addBarberShop(req) {
       })
     },
     function(error, response, body) {
-      console.log(body);
-      console.error(error);
+      if (response.statusCode == 200) {
+        res
+        .status(response.statusCode)
+        .json({ postBody: req.body.event });
+
+      } else {
+        console.error(error);
+      }
     }
   );
 }
