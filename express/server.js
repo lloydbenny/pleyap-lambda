@@ -4,7 +4,8 @@ const path = require('path');
 const serverless = require('serverless-http');
 const app = express();
 const bodyParser = require('body-parser');
-const request = require('request');
+
+
 
 // const ApolloClient = require('apollo-client').ApolloClient;
 // const gql = require('graphql-tag');
@@ -110,7 +111,7 @@ router.post('/hasura-user-sync-registration-pleyap-admin', (req, res) => {
       }
   }`;
 
-  request.post(
+  await request.post(
     {
       headers: {
         "content-type": "application/json",
