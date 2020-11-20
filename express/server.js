@@ -111,7 +111,7 @@ router.post('/hasura-user-sync-registration-pleyap-admin', (req, res) => {
       }
   }`;
 
-  await request.post(
+  request.post(
     {
       headers: {
         "content-type": "application/json",
