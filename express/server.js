@@ -95,7 +95,7 @@ router.post('/hasura-user-sync-registration-pleyap-admin', (req, res) => {
   const userId = req.body.event.user.id;
   const firstName = req.body.event.user.firstName;
   const lastName = req.body.event.user.lastName;
-  const picture = req.body.event.user.imageUrl;
+  const picture = "https://icotar.com/avatar/"+firstName+"%20"+lastName+".png?s=200";
 
   console.log(userId + "\n" + firstName + "\n" + lastName + "\n" + picture);
 
