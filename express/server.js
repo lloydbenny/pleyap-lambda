@@ -32,7 +32,7 @@ router.post('/hasura-user-sync-registration-pleyap', (req, res) => {
   const userId = req.body.event.user.id;
   const firstName = req.body.event.user.firstName;
   const lastName = req.body.event.user.lastName;
-  const picture = req.body.event.user.imageUrl;
+  const picture = "https://icotar.com/initials/"+firstName+"%20"+lastName+".png?s=200";
 
   console.log(userId + "\n" + firstName + "\n" + lastName + "\n" + picture);
 
@@ -95,7 +95,7 @@ router.post('/hasura-user-sync-registration-pleyap-admin', (req, res) => {
   const userId = req.body.event.user.id;
   const firstName = req.body.event.user.firstName;
   const lastName = req.body.event.user.lastName;
-  const picture = "https://icotar.com/avatar/"+firstName+"%20"+lastName+".png?s=200";
+  const picture = "https://icotar.com/initials/"+firstName+"%20"+lastName+".png?s=200";
 
   console.log(userId + "\n" + firstName + "\n" + lastName + "\n" + picture);
 
@@ -144,8 +144,8 @@ router.post('/hasura-user-sync-registration-pleyap-admin', (req, res) => {
         res
           .status(response.statusCode)
           .json({ message: error });
-          
-        console.error(error);
+
+          console.error(error);
       }
     }
   );
@@ -222,6 +222,7 @@ function addBarberShop(req, res) {
   const barber_shop_name = req.body.event.registration.data.barber_shop_name;
   const barber_shop_phone = req.body.event.registration.data.barber_shop_phone;
   const barber_shop_address = req.body.event.registration.data.barber_shop_address;
+  const barber_profile_img = "https://icotar.com/initials/"+barber_shop_name+".png?s=200";
 
   // console.log(userId + "\n" + barber_shop_name + "\n" + barber_shop_phone + "\n" + barber_shop_address);
 
@@ -247,7 +248,8 @@ function addBarberShop(req, res) {
             "name": barber_shop_name,
             "phone": barber_shop_phone,
             "address": barber_shop_address,
-            "ownerId": userId
+            "ownerId": userId,
+            "profileUrl": barber_profile_img
             // "ownerId": userId
           }
         }
