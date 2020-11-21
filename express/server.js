@@ -32,6 +32,7 @@ router.post('/hasura-user-sync-registration-pleyap', (req, res) => {
   const userId = req.body.event.user.id;
   const firstName = req.body.event.user.firstName;
   const lastName = req.body.event.user.lastName;
+  const personal_phone = req.body.event.user.mobilePhone;
   const picture = "https://icotar.com/initials/"+firstName+"%20"+lastName+".png?s=200";
 
   console.log(userId + "\n" + firstName + "\n" + lastName + "\n" + picture);
@@ -40,12 +41,14 @@ router.post('/hasura-user-sync-registration-pleyap', (req, res) => {
     $user_id: String,
 		$last_name: String,
 		$first_name: String,
-		$profileUrl: String) {
+    $profileUrl: String,
+    $phone: String) {
       insert_pleyap_datastore_Profile(objects: [{
         user_id: $user_id,
         lastName: $last_name,
-        firstName: $first_name
-        profileUrl: $profileUrl
+        firstName: $first_name,
+        profileUrl: $profileUrl,
+        phone_number: $phone
       }],
         on_conflict: {
           constraint: profile_pk,
@@ -68,7 +71,8 @@ router.post('/hasura-user-sync-registration-pleyap', (req, res) => {
           "user_id": userId,
           "first_name": firstName,
           "last_name": lastName,
-          "profileUrl": picture
+          "profileUrl": picture,
+          "phone": personal_phone
         }
       })
     },
